@@ -1,0 +1,11 @@
+SELECT [Doctor], [Professor], [Singer], [Actor]
+FROM 
+(SELECT Name, Occupation, 
+ RANK() OVER(PARTITION BY Occupation ORDER BY Name) AS Rank
+ FROM OCCUPATIONS
+) AS Source 
+PIVOT
+(MAX(Name)
+ FOR 
+ Occupation IN ([Doctor], [Professor], [Singer], [Actor])
+ ) AS PIVOT_TABLE;
