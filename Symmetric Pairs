@@ -1,0 +1,15 @@
+WITH t1 AS (SELECT 
+ROW_NUMBER() OVER( ORDER BY X, Y) As RowN,
+X, Y
+FROM Functions),
+t2 AS (SELECT 
+ROW_NUMBER() OVER( ORDER BY X, Y) As RowN,
+X, Y
+FROM Functions)
+SELECT t1.X, t1.Y
+FROM t1
+    JOIN t2 
+    ON t1.X = t2.Y AND t1.Y = t2.X AND t1.RowN != t2.RowN
+WHERE t1.X <= t1.Y
+GROUP BY t1.X, t1.Y
+ORDER BY t1.X ASC;
