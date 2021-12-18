@@ -1,0 +1,18 @@
+WITH 
+a1 AS (SELECT 
+       ROW_NUMBER() OVER( ORDER BY Start_Date) AS RowN,
+       Start_Date
+       FROM Projects 
+       WHERE Start_Date NOT IN (
+       SELECT End_Date FROM Projects)),
+a2 AS (SELECT 
+        ROW_NUMBER() OVER( ORDER BY End_Date) AS RowX,
+        End_Date
+        FROM Projects
+        WHERE End_Date NOT IN (
+        SELECT Start_Date FROM Projects))
+SELECT a1.Start_Date, a2.End_Date
+FROM a1
+    JOIN a2 
+    ON a1.RowN = a2.RowX
+ORDER BY DATEDIFF(day, a1.Start_Date, a2.End_Date), a1.Start_Date;
