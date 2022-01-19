@@ -1,0 +1,9 @@
+import re 
+
+s = input()
+
+for i in range(int(s)):
+    try:
+        print(bool(re.compile(input())))
+    except re.error:
+        print("False")
